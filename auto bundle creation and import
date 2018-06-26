@@ -1,0 +1,23 @@
+#Design
+host = "http://localhost:PORTDESIGN"
+apiKey = "TA_KEY"
+
+#Automation
+host_auto = "http://localhost:PORTAUTOMATION"
+apiKey_auto = "TA_KEY_AUTOMATION"
+
+design_client= dataikuapi.DSSClient(host, apiKey)
+auto_client = dataikuapi.DSSClient(host_auto, apiKey_auto)
+
+version_bundle = "bundle_v8"
+#Export bundle
+project = design_client.get_project("INDUSSYSTEMEU")
+project.export_bundle(version_bundle)
+project.download_exported_bundle_archive_to_file(version_bundle, "/Users/julien_moreschetti/temp_bundle.zip")
+
+#Import bundle
+project_automation = auto_client.get_project("INDUSSYSTEMEU")
+project_automation.import_bundle_from_archive("temp_bundle.zip")
+
+#Activate bundle
+project_automation.activate_bundle(version_bundle)
